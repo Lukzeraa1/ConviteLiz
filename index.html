@@ -236,6 +236,75 @@
   .music-toggle { background: none; border: none; cursor: pointer; font-size: 18px; padding: 0; line-height: 1; }
   .music-label { font-family: 'Cinzel Decorative', serif; font-size: 8px; letter-spacing: 2px; color: rgba(201,168,76,0.8); }
 
+  /* ── POPUP LOCALIZAÇÃO ── */
+  .popup-overlay {
+    display: none; position: fixed; inset: 0; z-index: 300;
+    background: rgba(10, 3, 24, 0.75);
+    align-items: center; justify-content: center;
+    backdrop-filter: blur(4px);
+    padding: 20px;
+  }
+  .popup-overlay.aberto { display: flex; animation: fadeIn 0.3s ease; }
+
+  .popup-box {
+    background: linear-gradient(160deg, #fdf6e3 0%, #f8eed5 60%, #f5e8c8 100%);
+    border: 1px solid #c9a84c;
+    max-width: 380px; width: 100%;
+    padding: 32px 28px;
+    text-align: center;
+    position: relative;
+    box-shadow: 0 0 60px rgba(180,100,240,0.3), 0 20px 60px rgba(0,0,0,0.4);
+    animation: popupEntrar 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+  @keyframes popupEntrar {
+    from { opacity: 0; transform: scale(0.85) translateY(20px); }
+    to   { opacity: 1; transform: scale(1) translateY(0); }
+  }
+
+  .popup-fechar {
+    position: absolute; top: 12px; right: 16px;
+    background: none; border: none; cursor: pointer;
+    font-size: 18px; color: #9a7a30; line-height: 1;
+    transition: color 0.2s;
+  }
+  .popup-fechar:hover { color: #7a3a8f; }
+
+  .popup-icone { font-size: 32px; margin-bottom: 12px; display: block; }
+
+  .popup-nome {
+    font-family: 'Cinzel Decorative', serif;
+    font-size: 13px; letter-spacing: 2px;
+    color: #7a3a8f; margin-bottom: 16px;
+  }
+
+  .popup-divider { height: 0.5px; background: linear-gradient(to right, transparent, #c9a84c, transparent); margin: 14px 0; }
+
+  .popup-rua {
+    font-size: 17px; font-style: italic;
+    color: #3a2808; line-height: 1.8; margin-bottom: 4px;
+  }
+  .popup-bairro {
+    font-family: 'Cinzel Decorative', serif;
+    font-size: 9px; letter-spacing: 3px;
+    color: #9a7a30; text-transform: uppercase; margin-bottom: 22px;
+  }
+
+  .popup-btn {
+    display: inline-flex; align-items: center; gap: 10px;
+    background: linear-gradient(135deg, #7a3a8f, #9a5ab0);
+    color: #fdf0ff; text-decoration: none;
+    font-family: 'Cinzel Decorative', serif;
+    font-size: 10px; letter-spacing: 2px;
+    padding: 13px 24px; width: 100%; justify-content: center;
+    transition: all 0.2s; border: none; cursor: pointer;
+  }
+  .popup-btn:hover { background: linear-gradient(135deg, #8a4a9f, #b07ac0); transform: translateY(-1px); }
+
+  .popup-nota {
+    font-size: 12px; font-style: italic;
+    color: #9a7a30; margin-top: 14px; line-height: 1.6;
+  }
+
   @media (max-width: 480px) {
     .border-inner { padding: 20px 16px 28px; }
     .gifts-grid-small { grid-template-columns: 1fr; }
@@ -315,8 +384,8 @@
             </div>
             <div class="info-row">
               <span class="info-label">Local</span>
-              <a href="COLE_AQUI_O_LINK_DO_GOOGLE_MAPS" class="location-link" target="_blank">
-                🗺️ Clique aqui para ver no mapa
+              <a href="#" class="location-link" onclick="abrirPopupMapa(event)">
+                🗺️ Ver localização
               </a>
             </div>
           </div>
@@ -389,6 +458,7 @@
                     <option value="3">Eu + 2 pessoas (3 ao total)</option>
                     <option value="4">Eu + 3 pessoas (4 ao total)</option>
                     <option value="5">Eu + 4 pessoas (5 ao total)</option>
+                    <option value="6">Eu + 5 pessoas (6 ao total)</option>
                   </select>
                 </div>
                 <div class="people-preview" id="peoplePreview">
@@ -424,6 +494,22 @@
         </div>
       </div>
     </div>
+  </div>
+</div>
+
+<!-- ── POPUP LOCALIZAÇÃO ── -->
+<div class="popup-overlay" id="popupMapa" onclick="fecharPopupFora(event)">
+  <div class="popup-box">
+    <button class="popup-fechar" onclick="fecharPopup()">✕</button>
+    <span class="popup-icone">🏰</span>
+    <p class="popup-nome">LOMA Festas e Eventos</p>
+    <div class="popup-divider"></div>
+    <p class="popup-rua">Rua Louro, esquina com<br>Rua Urucum</p>
+    <p class="popup-bairro">✦ Bairro São Joaquim · Altamira/PA ✦</p>
+    <a class="popup-btn" href="https://www.google.com/maps/place/LOMA+Festas+e+Eventos/@-3.1968788,-52.2295867,980m/data=!3m2!1e3!4b1!4m6!3m5!1s0x9292393a64b03015:0x197cf3bd14f9e2e5!8m2!3d-3.1968842!4d-52.2270118!16s%2Fg%2F11w7gg97fw?entry=ttu&g_ep=EgoyMDI2MDQyOS4wIKXMDSoASAFQAw%3D%3D" target="_blank">
+      🗺️ &nbsp;Abrir no Google Maps
+    </a>
+    <p class="popup-nota">Toque para abrir a navegação<br>no seu aplicativo de mapas</p>
   </div>
 </div>
 
@@ -571,6 +657,20 @@
     document.getElementById('confirmedList').style.display = 'block';
     document.getElementById('confirmedNames').innerHTML = confirmed.map(n => `<p class="confirmed-name">⚜️ ${n}</p>`).join('');
   }
+  // Popup localização
+  function abrirPopupMapa(e) {
+    e.preventDefault();
+    document.getElementById('popupMapa').classList.add('aberto');
+    document.body.style.overflow = 'hidden';
+  }
+  function fecharPopup() {
+    document.getElementById('popupMapa').classList.remove('aberto');
+    document.body.style.overflow = '';
+  }
+  function fecharPopupFora(e) {
+    if (e.target === document.getElementById('popupMapa')) fecharPopup();
+  }
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') fecharPopup(); });
 </script>
 </body>
 </html>
